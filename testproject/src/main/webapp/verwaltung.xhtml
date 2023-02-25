@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Verwaltung</title>
+	<script src="js/js.js"></script>
+	<!-- Import von selbst zusammengestellten JavaScript Code-->
+	<link rel="stylesheet" href="styles/styles.css" />
+	<!-- Import von selbst zusammengestellten css Code-->
+</h:head>
+<h:body>
+
+	<div id="new-projects"></div>
+	<script>
+		$("#new-projects").load("header.html");
+	</script>
+	<p:card>
+		<h:outputText
+			value="Willkommen Melder #{benutzerController.aktuellerBenutzer.name}! "
+			rendered="#{benutzerController.logedIn &amp;&amp; !benutzerController.aktuellerBenutzer.isBerger}" />
+		<h:outputText
+			value="Willkommen Berger #{benutzerController.aktuellerBenutzer.name}! "
+			rendered="#{benutzerController.logedIn &amp;&amp; benutzerController.aktuellerBenutzer.isBerger}" />
+		<h:outputText
+			value="Für weitere Funktionen loggen Sie sich bitte auf der Startseite ein!"
+			rendered="#{!benutzerController.logedIn}" />
+	</p:card>
+	<h:form id="netzVerwaltung">
+		<p:card rendered="#{benutzerController.logedIn}">
+			<h:panelGrid columns="2">
+
+				<h:commandLink value="zurück" action="#{netzController.zurueck()}"
+					rendered="#{netzController.index >0}" />
+				<h:outputText value=" " rendered="#{netzController.index ==0}" />
+
+				<h:commandLink value="vor" action="#{netzController.vor()}"
+					rendered="#{netzController.size -1 >netzController.index}" />
+				<h:outputText value=" "
+					rendered="#{netzController.size -1 ==netzController.index}" />
+
+				<h:outputLabel value="Wollen Sie dieses Netz bergen?" for="bergen"
+					rendered="#{benutzerController.aktuellerBenutzer.isBerger}" />
+				<p:selectBooleanCheckbox id="bergen"
+					value="#{netzController.netzBergen}"
+					rendered="#{benutzerController.aktuellerBenutzer.isBerger}">
+					<p:ajax event="change" update="senden status" />
+				</p:selectBooleanCheckbox>
+
+				<h:outputLabel value="ID" for="id" />
+				<h:outputText value="#{netzController.netz.id}" />
+
+				<h:outputLabel value="GPS-Breite" for="gpsb" />
+				<h:outputText value="#{netzController.netz.gpsBreite}" />
+
+				<h:outputLabel value="GPS-Länge" for="gpsl" />
+				<h:outputText value="#{netzController.netz.gpsLänge}" />
+
+				<h:outputLabel value="Größe:" for="größe" />
+				<h:outputText value="#{netzController.netz.groesse}" />
+
+				<h:outputLabel value="Status: " for="status" />
+				<p:selectOneMenu id="status" value="#{netzController.netz.status}"
+					size="40">
+					<f:selectItem itemValue="Gemeldet" itemLabel="Gemeldet"
+						itemDisabled="#{netzController.netzBergen}" />
+					<f:selectItem itemValue="Bergung bevorstehend"
+						itemLabel="Bergung bevorstehend"
+						itemDisabled="#{!netzController.netzBergen}" />
+					<f:selectItem itemValue="Geborgen" itemLabel="Geborgen"
+						itemDisabled="#{!netzController.netzBergen}" />
+					<f:selectItem itemValue="Verschollen" itemLabel="Verschollen" />
+				</p:selectOneMenu> 
+
+				<h:outputLabel value="Melder" for="melder" />
+				<h:outputText id="melder"
+					value="#{netzController.netz.gemeldetVon.name}" />
+
+				<h:outputLabel value="Erreichbarkeit Melder" for="num" />
+				<h:outputText id="num"
+					value="#{netzController.netz.gemeldetVon.telefonnummer}" />
+
+				<h:outputLabel value="Berger" for="berger" />
+				<h:outputText id="berger" value="#{netzController.netz.berger.name}" />
+
+				<h:outputLabel value="Erreichbarkeit Berger" for="num2" />
+				<h:outputText id="num2"
+					value="#{netzController.netz.berger.telefonnummer}" />
+
+				<h:commandLink value="zurück" action="#{netzController.zurueck()}"
+					rendered="#{netzController.index >0}" />
+				<h:outputText value=" " rendered="#{netzController.index ==0}" />
+
+				<h:commandLink value="vor" action="#{netzController.vor()}"
+					rendered="#{netzController.size -1 >netzController.index}" />
+				<h:outputText value=" "
+					rendered="#{netzController.size -1 ==netzController.index}" />
+
+				<h:panelGroup id="senden">
+					<p:commandLink value="Netz bergen"
+						action="#{netzliste.netzDao.saveNetzWithBerger(benutzerController.aktuellerBenutzer , netzController.netz)}"
+						rendered="#{netzController.netzBergen}" />
+					<p:commandLink value="Änderung übernehmen"
+						action="#{netzliste.netzDao.saveNetz(benutzerController.aktuellerBenutzer , netzController.netz)}"
+						rendered="#{!netzController.netzBergen}" />
+				</h:panelGroup>
+
+
+				<h:commandLink
+					action="#{netzliste.netzDao.deleteNetz(netzController.netz)}"
+					rendered="#{benutzerController.aktuellerBenutzer.name.equals('admin')}">
+					<img src="images/x.png" />
+				</h:commandLink>
+
+			</h:panelGrid>
+		</p:card>
+	</h:form>
+
+	<footer>
+		<!-- Footer outsourced into footer.html and loaded via jq.js-->
+		<div id="footer-placeholder"></div>
+		<script>
+			$(function() {
+				$("#footer-placeholder").load("footer.html");
+			});
+		</script>
+	</footer>
+</h:body>
+</html>
+

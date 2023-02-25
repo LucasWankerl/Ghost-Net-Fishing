@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+  <title>Netz melden</title>
+   	<link rel="stylesheet" href="styles/styles.css"/> <!-- Import von selbst zusammengestellten css Code-->
+	<script src="js/js.js"></script> <!-- Import von selbst zusammengestellten JavaScript Code-->
+	
+</h:head>
+
+<h:body>
+	
+	<div id="new-projects"></div>
+ 	<script>$( "#new-projects" ).load( "header.html" );</script>
+ 	
+	<p:card rendered="#{benutzerController.logedIn}">
+		<h:outputText value="Willkommen Melder #{benutzerController.aktuellerBenutzer.name}! " rendered="#{benutzerController.logedIn &amp;&amp; !benutzerController.aktuellerBenutzer.isBerger}" />
+		<h:outputText value="Willkommen Berger #{benutzerController.aktuellerBenutzer.name}! " rendered="#{benutzerController.logedIn &amp;&amp; benutzerController.aktuellerBenutzer.isBerger}" />
+	</p:card>
+	
+   <div class="center">
+	   <h:form id="meldeformular">
+	   <p:card>
+	    <h:panelGrid columns="2">
+	    	<h:outputLabel value="GPS-Breite" for="ngpsb" />
+	      	<p:inputNumber id="ngpsb" value="#{netzController.neuesNetz.gpsBreite}" required="true" size="40"
+	      				 symbol=" °" symbolPosition="s" decimalSeparator="," modifyValueOnWheel="false" 
+	      				 minValue="-90" maxValue="90" decimalPlaces="5"/>	
+	    
+	      	<h:outputLabel value="GPS-Länge" for="ngpsl" />
+	       	<p:inputNumber id="ngpsl" value="#{netzController.neuesNetz.gpsLänge}" required="true" size="40"
+	      				 symbol=" °" symbolPosition="s" decimalSeparator="," modifyValueOnWheel="false" 
+	      				 minValue="-180" maxValue="180" decimalPlaces="5"/>
+	      
+	      <h:outputLabel value="Größe:" for="ngröße" />
+	      <p:selectOneMenu id="ngröße" value="#{netzController.neuesNetz.groesse}">
+	   		<f:selectItem itemValue="klein" itemLabel="klein" />
+	   		<f:selectItem itemValue="mittel" itemLabel="mittel" />
+	   		<f:selectItem itemValue="groß" itemLabel="groß" />
+		  </p:selectOneMenu>
+		  
+	      <h:outputLabel value="Status: " for="nstatus" />
+	      <p:selectOneMenu id="nstatus" value="#{netzController.neuesNetz.status}" size="40" >
+	   		<f:selectItem itemValue="Gemeldet" itemLabel="gemeldet" />
+		  </p:selectOneMenu>
+		  
+	      <p:commandLink value="Melden" action="#{netzliste.netzDao.saveNetz(benutzerController.aktuellerBenutzer , netzController.neuesNetz)}" rendered="#{benutzerController.logedIn}"/>
+	      <p:commandLink value="anonym Melden" action="#{netzliste.netzDao.saveNetzAnonym(netzController.neuesNetz)}" rendered="#{!benutzerController.logedIn}"/>
+	      <p:messages />
+	      </h:panelGrid>
+	  </p:card>
+	  </h:form>
+  </div>
+  
+  
+
+	<footer> 
+      <!-- Footer outsourced into footer.html and loaded via jq.js-->
+        <div id="footer-placeholder"></div>
+            <script>$(function(){$("#footer-placeholder").load("footer.html");});</script>
+    </footer>
+
+</h:body>
+</html>
+

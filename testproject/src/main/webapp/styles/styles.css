@@ -1,0 +1,212 @@
+/* Allgemein */
+body { 
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    margin:2rem;
+    background-image: url("./../images/tree.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+p, article{
+    margin-left: 2rem;
+    margin-right: 2rem;
+    color: var(--akzentfarbe1);
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 500;
+}
+a:hover{
+    color: var(--akzentfarbe1);
+    text-decoration: underline;
+    transition: 0.3s ease-in;
+}
+.block{
+    display: block;
+}
+.center{
+    display: flex;
+  	justify-content: center;
+ 	align-items: center;
+}
+h2{
+    width: 99%;
+    padding:1rem 0rem;
+    text-align: center;
+}
+
+/* set Design-colors for website */
+:root{
+    --akzentfarbe1: rgb(0, 0, 0);
+    --akzentfarbe2: rgb(0, 128, 255, 0.8);
+    --akzentfarbe3: rgb(0, 128, 255);
+    --akzentfarbe4: rgb(255, 255, 255);
+    --akzentfarbe5: rgb(82, 81, 81);
+}
+
+/* Header-elements*/
+.unternehmen {         /* Logo + Name */
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.logo {
+    width: 4rem;
+    margin: 0.5rem;
+    border-radius: 100%;
+}
+.unternehmenName{
+    text-decoration: none;
+    color: var(--akzentfarbe2);
+}
+.menuicon{          /* Menüburger nur sichtbar,falls Bildschirm < 767px */
+    width: 1.5rem;
+    position: fixed;
+    top: 2rem;
+    right: 1rem;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 99999999;
+}
+.menuicon:hover{
+    transform:scale(2)
+}
+.top-header{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+nav{
+    width: 100%;
+    background-color: var(--akzentfarbe2);
+}
+nav ul{
+    display: flex;
+    justify-content: left;
+    gap: 1rem;
+}
+nav li{
+    list-style: none;
+}
+nav li a{
+    text-decoration: none;
+    color: var(--akzentfarbe4);
+    padding: 1rem;
+    font-size: 1.3rem;
+}
+
+/* Responsive Website*/
+@media screen and (max-width:767px){
+    nav ul {                    /* Navigation an der rechten Seite unsichtbar machen */
+        visibility: hidden;
+        opacity: 0;
+        flex-direction: column;
+        justify-content: center;
+        align-items: end;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background-image: linear-gradient(315deg, var(--akzentfarbe3) 50%, var(--akzentfarbe4) 80% );
+        border-radius: 50% 0% 0% 50%;
+        height: 100%;
+        margin: 0;
+    }
+    .menuicon{              /* Menüburger sichtbar machen */
+        display: block;
+        transition: 0.3s;
+        visibility: visible;
+        opacity: 1;
+    }
+    .open ul{               /* bei anklicken des Menüburgers die Navigation sichtbar machen */
+        visibility: visible;
+        opacity: 1;
+        transition: 0.3s ease-in;
+        z-index: 9999999;
+    }
+    h2{                     /* h2 unterteilt semantische Abschnitte auf kleinen Geräten deutlicher  */
+        background-color: var(--akzentfarbe2);
+        color: var(--akzentfarbe4);
+    }
+    .footer{                /* Footersections werden untereinander angezeigt */
+        display: flex;
+        flex-direction: column;  
+    }    
+}
+
+/* footer */
+.footer {
+    background-color: var(--akzentfarbe2);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    vertical-align: baseline;
+    margin-top: 20px;
+}
+.footersection{
+    padding: 1rem 5rem 0.5rem 5rem;
+    text-align: center;
+}
+.footersection p, a{
+    color: var(--akzentfarbe1);
+    font-size: 0.8rem;
+    transition: 0.2s ease-in;
+    margin: 0;
+}
+.footersection a:hover{
+        color: var(--akzentfarbe1);
+}
+/* Footer Ende */
+
+/* Button for sort function in a table with icon */
+.sortButton{
+    background-image: url('./../images/sortIcon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1rem;
+    height: 1rem;
+    border: 1 px solid black;
+}
+
+/* Table with sort und search function support based on
+https://www.w3schools.com/howto/howto_js_filter_table.asp */
+
+#myInput {
+    background-image: url('./../images/Lupe.png'); /* Add a search icon to input */
+    background-size: 1.5rem;
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 100%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid black; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+    text-align: center;
+  }
+  
+  #myTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 1px solid var(--akzentfarbe4); /* Add a grey border */
+    font-size: 18px; /* Increase font-size */
+    background-color: rgba(180, 196, 182, 0.7);
+    overflow-y: scroll;
+  }
+  
+  #myTable th, #myTable td {
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+    font-weight: 500;
+  }
+  
+  #myTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid var(--akzentfarbe4);
+  }
+  
+  #myTable tr.header, #myTable tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: var(--akzentfarbe2);
+  }

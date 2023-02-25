@@ -1,0 +1,51 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+      
+<div class="top-header">   <!-- Header bestehend aus Logo/Unternehmenslogo und einer Navigation-->
+  <div class="unternehmen">
+      <a href="./index.html"><img class="logo" src="images/logo.png"/></a>
+      <a class="unternehmenName" href="./index.html"><h1>Sea Shepard</h1></a>
+  </div>
+  <nav class="navbar" id="myNav">
+      <ul>
+          <li><a href="index.xhtml">Startseite</a></li>
+          <li><a href="übersicht.xhtml">Übersicht</a></li>
+          <li><a href="verwaltung.xhtml">Verwaltung</a></li>
+          <li><a href="melden.xhtml">Melden</a></li>
+      </ul>
+  </nav>
+  <!-- Menüburger für responsives Design-->
+  <img class="menuicon" id="myMenuIcon" src="images/icon.png" onclick="toggleNavbar()"/>
+</div>
+
+	<h:form id="loginPanel"> 
+	    <h:outputText value="Willkommen #{benutzerController.aktuellerBenutzer.name} !" rendered="#{benutzerController.logedIn}" />
+	    <h:outputText value="Sie sind angemeldet als Melder! Um Berger zu werden, ergänzen Sie bitte ihre Telefonnummer" rendered="#{benutzerController.logedIn &amp;&amp; !benutzerController.aktuellerBenutzer.isBerger}"   />
+	    <h:outputText value="Sie sind angemeldet als Berger!" rendered="#{benutzerController.logedIn &amp;&amp; benutzerController.aktuellerBenutzer.isBerger}"   />
+	    <h:commandLink value="Logout" action="#{benutzerController.logout()}" rendered="#{benutzerController.logedIn}"> <p:ajax event="action" update="loginPanel"/> </h:commandLink>
+	   
+    	<h:panelGrid columns="3" rendered="#{!benutzerController.logedIn}">
+	      <h:outputLabel value="Name" for="name" />
+	      <p:inputText id="name" value="#{benutzerController.aktuellerBenutzer.name}" required="true" size="40" label="Benutzername"/>
+	      <p:messages for="name"/>
+	          
+	      <h:outputLabel value="Passwort" for="pass" />
+	      <p:password id="pass" value="#{benutzerController.aktuellerBenutzer.passwort}" required="true" size="40" feedback="true" label="Passwort"></p:password>
+	      <p:messages for="pass"/>
+	      
+	      <h:outputLabel value="Telefonnummer" for="num" />
+	      <p:inputText id="num" value="#{benutzerController.aktuellerBenutzer.telefonnummer}" required="#{benutzerController.aktuellerBenutzer.isBerger}" size="40" label="Telefonnummer"/>
+	      <p:messages for="num"/>
+	      
+	      <h:outputLabel value="Sind sie Berger?" for="isberger" />
+	      <p:selectBooleanCheckbox id="isberger" value="#{benutzerController.aktuellerBenutzer.isBerger}" event="click" update="num">
+	    	  <p:ajax event="change" update="num"/>
+	      </p:selectBooleanCheckbox>
+	      <p:messages for="isberger"/>
+	      
+	      <h:commandLink value="Login" action="#{benutzerController.login()}"></h:commandLink>
+	    </h:panelGrid>
+	  </h:form>
+</div>

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Startseite</title>
+	<link rel="stylesheet" href="styles/styles.css" />
+	<!-- Import von selbst zusammengestellten css Code-->
+	<script src="js/js.js"></script>
+	<!-- Import von selbst zusammengestellten JavaScript Code-->
+</h:head>
+<h:body>
+	<div id="new-projects"></div>
+	<script>
+		$("#new-projects").load("header.html");
+	</script>
+
+
+	<h:form id="loginPanel">
+		<p:card>
+			<h:outputText
+				value="Willkommen Melder #{benutzerController.aktuellerBenutzer.name}! "
+				rendered="#{benutzerController.logedIn &amp;&amp; !benutzerController.aktuellerBenutzer.isBerger}" />
+			<h:outputText
+				value="Willkommen Berger #{benutzerController.aktuellerBenutzer.name}! "
+				rendered="#{benutzerController.logedIn &amp;&amp; benutzerController.aktuellerBenutzer.isBerger}" />
+			<p:commandLink value="Logout" action="#{benutzerController.logout()}"
+				rendered="#{benutzerController.logedIn}" update="loginPanel"></p:commandLink>
+
+
+			<h:panelGrid columns="3" rendered="#{!benutzerController.logedIn}">
+				<h:outputLabel value="Name: " for="name" />
+				<p:inputText id="name"
+					value="#{benutzerController.aktuellerBenutzer.name}"
+					required="true" size="40" label="Benutzername">
+					<f:event listener="#{benutzerController.postValidateName}" type="jakarta.faces.event.PostValidateEvent"/>
+				</p:inputText>
+				<p:messages for="name" />
+				
+				<h:outputLabel value="Telefonnummer" for="num" />
+				<p:inputText id="num"
+					value="#{benutzerController.aktuellerBenutzer.telefonnummer}"
+					required="true" size="40" label="Telefonnummer"> 
+				<f:event listener="#{benutzerController.postValidateTelefon}" type="jakarta.faces.event.PostValidateEvent"/>
+				</p:inputText>
+				<p:messages for="num" />
+
+				<h:outputLabel value="Sind sie Berger?" for="isberger" />
+				<p:selectBooleanCheckbox id="isberger"
+					value="#{benutzerController.aktuellerBenutzer.isBerger}">
+					<f:event listener="#{benutzerController.postValidateBerger}" type="jakarta.faces.event.PostValidateEvent"/>
+				</p:selectBooleanCheckbox>
+				<p:messages for="isberger" />
+
+				<h:outputLabel value="Passwort: " for="pass" />
+				<p:password id="pass"
+					value="#{benutzerController.aktuellerBenutzer.passwort}"
+					required="true" size="40" feedback="true" label="Passwort" validator="#{benutzerController.validateLogin}"></p:password>
+					<p:messages for="pass" />
+
+				<p:commandLink value="Login" action="#{benutzerController.login()}"
+					update="loginPanel"></p:commandLink>
+			</h:panelGrid>
+			<p:messages />
+		</p:card>
+	</h:form>
+
+	<h2>Willkommen bei Shea Sepherd</h2>
+	<p>
+		In unserer Webapp können Sie Geisternetze melden. <br /> Geisternetze
+		sind herrenlose Fischernetze, die im Meer treiben. <br /> <br /> Sie
+		Können jederzeit ohne eingeloggt zu sein, Netze anonym melden und
+		erhalten eine Übersicht über alle gemeldeten Netze. <br /> <br />
+		Loggen Sie sich bitte ein, um aktiv Netze zu bergen oder um für
+		Rückfragen erreichbar zu sein!
+	</p>
+
+
+
+	<footer>
+		<!-- Footer outsourced into footer.html and loaded via jq.js-->
+		<div id="footer-placeholder"></div>
+		<script>
+			$(function() {
+				$("#footer-placeholder").load("footer.html");
+			});
+		</script>
+	</footer>
+</h:body>
+</html>

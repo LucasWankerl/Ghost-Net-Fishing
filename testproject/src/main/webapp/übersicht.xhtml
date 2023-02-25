@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Übersicht</title>
+	<script src="js/js.js"></script>
+	<!-- Import von selbst zusammengestellten JavaScript Code-->
+	<link rel="stylesheet" href="styles/styles.css" />
+	<!-- Import von selbst zusammengestellten css Code-->
+</h:head>
+<h:body>
+	<div id="new-projects"></div>
+	<script>
+		$("#new-projects").load("header.html");
+	</script>
+
+	<h:form>
+		<p:dataTable var="netz" value="#{netzliste.alleNetze}"
+			sortBy="#{netz.gpsLänge}" sortOrder="descending"
+			widgetVar="netzTable">
+			<f:facet name="header">Netzliste</f:facet>
+			<p:column sortBy="#{netz.id}">
+				<f:facet name="header">ID</f:facet>
+				<h:outputText value="#{netz.id}" />
+			</p:column>
+			<p:column sortBy="#{netz.gpsBreite}">
+				<f:facet name="header">Breite</f:facet>
+				<h:outputText value="#{netz.gpsBreite}" />
+			</p:column>
+			<p:column sortBy="#{netz.gpsLänge}">
+				<f:facet name="header">Länge</f:facet>
+				<h:outputText value="#{netz.gpsLänge}" />
+			</p:column>
+			<p:column sortBy="#{netz.groesse}">
+				<f:facet name="header">Größe</f:facet>
+				<h:outputText value="#{netz.groesse}" />
+			</p:column>
+			<p:column sortBy="#{netz.status}" filterMatchMode="exact"
+				filterBy="#{netz.status}">
+				<f:facet name="header">Status</f:facet>
+				<f:facet name="filter" update="map">
+					<p:selectOneMenu id="filter" size="40"
+						onchange="PF('netzTable').filter()">
+						<f:selectItem itemLabel="All" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItem itemValue="Gemeldet" itemLabel="Gemeldet" />
+						<f:selectItem itemValue="Bergung bevorstehend"
+							itemLabel="Bergung bevorstehend" />
+						<f:selectItem itemValue="Geborgen" itemLabel="Geborgen" />
+						<f:selectItem itemValue="Verschollen" itemLabel="Verschollen" />
+					</p:selectOneMenu>
+				</f:facet>
+				<h:outputText value="#{netz.status}" />
+			</p:column>
+			<p:column sortBy="#{netz.gemeldetVon.name}">
+				<f:facet name="header">Melder</f:facet>
+				<h:outputText value="#{netz.gemeldetVon.name}" />
+			</p:column>
+			<p:column sortBy="#{netz.gemeldetVon.telefonnummer}">
+				<f:facet name="header">Telefon Melder</f:facet>
+				<h:outputText value="#{netz.gemeldetVon.telefonnummer}" />
+			</p:column>
+			<p:column sortBy="#{netz.berger.name}">
+				<f:facet name="header">Berger</f:facet>
+				<h:outputText value="#{netz.berger.name}" />
+			</p:column>
+			<p:column sortBy="#{netz.berger.telefonnummer}">
+				<f:facet name="header">Telefon Berger</f:facet>
+				<h:outputText value="#{netz.berger.telefonnummer}" />
+			</p:column>
+		</p:dataTable>
+
+
+		<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+		<div id="map" class="card">
+			<p:gmap id="map" center="0,0" zoom="2" type="HYBRID"
+				style="width:100%;height:100%" model="#{markersView.simpleModel}" />
+		</div>
+	</h:form>
+
+	<footer>
+		<!-- Footer outsourced into footer.html and loaded via jq.js-->
+		<div id="footer-placeholder"></div>
+		<script>
+			$(function() {
+				$("#footer-placeholder").load("footer.html");
+			});
+		</script>
+	</footer>
+</h:body>
+</html>
+
